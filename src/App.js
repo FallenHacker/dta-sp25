@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
+import logo from './logo.png';
+import dta from './dta.png';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -24,6 +26,8 @@ function App() {
 
   return (
     <div className="App">
+      <img src={logo} alt="Logo" className="app-logo" />
+      <img src={dta} alt="Dta" className="dta-logo" />
       <div className={`input-container ${isSubmitted ? 'top' : ''}`}>
         <input
           type="text"
