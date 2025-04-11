@@ -1,23 +1,57 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [inputText, setInputText] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (inputText.trim() !== '') {
+      setIsSubmitted(true);
+    }
+  };
+
+  // Allow pressing Enter to submit
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && inputText.trim() !== '') {
+      setIsSubmitted(true);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className={`input-container ${isSubmitted ? 'top' : ''}`}>
+        <input
+          type="text"
+          value={inputText}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+          placeholder="Please Enter Your Trading Strategy . . ."
+        />
+        <button onClick={handleSubmit}>Go</button>
+      </div>
+
+      {isSubmitted && (
+        <>
+          <div className="content-container">
+            <div className="graph-container">
+              <div className="graph-placeholder">
+                <div className="graph-line"></div>
+              </div>
+            </div>
+            <div className="sentences-container">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="sentence-placeholder"></div>
+              ))}
+            </div>
+          </div>
+          <div className="paragraph-container"></div>
+        </>
+      )}
     </div>
   );
 }
