@@ -105,7 +105,23 @@ body {
   position: relative;
 }
 
+.app-logo {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  width: 6%;
+  height: 12%;
+  z-index: 1000;
+}
 
+.dta-logo {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  width: 6%;
+  height: 12%;
+  z-index: 1000;
+}
 
 .sentences-container {
   flex: 1;
