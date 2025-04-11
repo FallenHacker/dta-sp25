@@ -1,33 +1,57 @@
 import React, { useState } from 'react';
-import StrategyForm from './components/StrategyForm';
-import OutputDisplay from './components/OutputDisplay';
 import './App.css';
 
 function App() {
-  const [strategy, setStrategy] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [output, setOutput] = useState(null);
+  const [inputText, setInputText] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (inputStrategy) => {
-    setStrategy(inputStrategy);
-    setSubmitted(true);
-    try {
-      const res = await fetch('http://localhost:5000/analyze-strategy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ strategy: inputStrategy })
-      });
-      const data = await res.json();
-      setOutput(data);
-    } catch (err) {
-      console.error('Error fetching output:', err);
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (inputText.trim() !== '') {
+      setIsSubmitted(true);
+    }
+  };
+
+  // Allow pressing Enter to submit
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && inputText.trim() !== '') {
+      setIsSubmitted(true);
     }
   };
 
   return (
-    <div className={`app-container ${submitted ? 'submitted' : ''}`}>
-      <StrategyForm onSubmit={handleSubmit} />
-      {submitted && <OutputDisplay output={output} />}
+    <div className="App">
+      <div className={`input-container ${isSubmitted ? 'top' : ''}`}>
+        <input
+          type="text"
+          value={inputText}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+          placeholder="Please Enter Your Trading Strategy . . ."
+        />
+        <button onClick={handleSubmit}>Go</button>
+      </div>
+
+      {isSubmitted && (
+        <>
+          <div className="content-container">
+            <div className="graph-container">
+              <div className="graph-placeholder">
+                <div className="graph-line"></div>
+              </div>
+            </div>
+            <div className="sentences-container">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="sentence-placeholder"></div>
+              ))}
+            </div>
+          </div>
+          <div className="paragraph-container"></div>
+        </>
+      )}
     </div>
   );
 }
