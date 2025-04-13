@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  transition: margin-top 0.5s ease;
+}
+
+.app-container.submitted {
+  margin-top: 20px;
+}
+
+.strategy-form {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.strategy-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+}
+
+.strategy-form button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+.output-display {
+  margin-top: 30px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.output-display img {
+  max-width: 100%;
+  margin-top: 10px;
+}
