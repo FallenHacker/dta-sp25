@@ -1,0 +1,9 @@
+flask
+flask-cors
+vectorbt
+alpaca-trade-api
+pandas
+numpy
+matplotlib
+plotly
+python-dotenv
