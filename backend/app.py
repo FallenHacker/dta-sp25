@@ -1,23 +1,26 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from flask_cors import CORS
-from run_dynamic_strategy import run_backtest
-
+import time
+import os
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route("/run-strategy", methods=["POST"])
 def run_strategy():
     try:
-        data = request.get_json()
-        strategy_file = data["strategy_file"]     # e.g. "allHands_strat1.py"
-        symbol = data["symbol"]                   # e.g. "AAPL"
-        start = data["start"]                     # e.g. "2024-01-01"
-        end = data["end"]                         # e.g. "2024-03-31"
+        strategy_path = "strategy_files/trading_strategy.py"
+        timeout = 5
+        elapsed = 0
+        while not os.path.exists(strategy_path) and elapsed < timeout:
+            time.sleep(0.1)
+            elapsed += 0.1
 
-        result = run_backtest(strategy_file, symbol, start, end)
+        if not os.path.exists(strategy_path):
+            raise FileNotFoundError("Strategy file was not created in time.")
+
+        from run_dynamic_strategy import result
         return jsonify(result)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-if __name__ == "__main__":
-    app.run(debug=True)

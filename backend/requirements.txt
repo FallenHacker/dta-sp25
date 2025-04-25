@@ -1,9 +1,11 @@
 flask
 flask-cors
+os
 vectorbt
-alpaca-trade-api
 pandas
 numpy
 matplotlib
-plotly
+py_vollib
+datetime
+requests
 python-dotenv
