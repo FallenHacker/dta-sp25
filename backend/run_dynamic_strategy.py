@@ -1,11 +1,21 @@
 import vectorbt as vbt
 import pandas as pd
-from trading_strategy import run_strategy
 from utils import collect_all_data
+import importlib.util
+import os
+
+def load_strategy():
+    path = os.path.join("..", "trading_strategies", "trading_strategy.py")
+    spec = importlib.util.spec_from_file_location("trading_strategy", path)
+    strategy_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(strategy_module)
+    return strategy_module
 
 df = collect_all_data("AAPL", "2024-02-01", "2025-02-01")
 
-strategy_output = run_strategy(df)
+strategy_module = load_strategy()
+strategy_output = strategy_module.run_strategy(df)
+
 
 portfolio = vbt.Portfolio.from_signals(
     close=df['close'],
