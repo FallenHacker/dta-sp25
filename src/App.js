@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import './App.css';
 import logo from './logo.png';
 import dta from './dta.png';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [backtestResults, setBacktestResults] = useState(null);
 
   const handleInputChange = (e) => {
     setInputText(e.target.value);
@@ -26,7 +33,12 @@ function App() {
     
           console.log('Generated strategy file:', filename);
     
-          //can do vectorbt graphs and stuff here
+          const runRes = await fetch('http://localhost:5000/run-strategy', {
+            method: 'POST'
+          });
+          const result = await runRes.json();
+          setBacktestResults(result);
+          
         } catch (err) {
           console.error('Error generating strategy:', err);
         } finally {
@@ -56,18 +68,39 @@ function App() {
         <button onClick={handleSubmit}>Go</button>
       </div>
 
-      {isSubmitted && (
+      {isSubmitted && backtestResults && (
         <>
           <div className="content-container">
             <div className="graph-container">
-              <div className="graph-placeholder">
-                <div className="graph-line"></div>
-              </div>
+              <Line
+                data={{
+                  labels: backtestResults.dates,
+                  datasets: [{
+                    label: 'Portfolio Value',
+                    data: backtestResults.portfolio_value_series,
+                    borderColor: 'blue',
+                    tension: 0.2
+                  }]
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false }
+                  },
+                  scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Portfolio Value ($)' } }
+                  }
+                }}
+              />
             </div>
+
             <div className="sentences-container">
-              {[...Array(5)].map((_, index) => (
-                <div key={index} className="sentence-placeholder"></div>
-              ))}
+              <div className="sentence-placeholder">Total Return: {backtestResults.total_return.toFixed(2)}%</div>
+              <div className="sentence-placeholder">Annualized Return: {backtestResults.annualized_return.toFixed(2)}%</div>
+              <div className="sentence-placeholder">Max Drawdown: {backtestResults.max_drawdown.toFixed(2)}%</div>
+              <div className="sentence-placeholder">Sharpe Ratio: {backtestResults.sharpe_ratio.toFixed(2)}</div>
+              <div className="sentence-placeholder">Win Rate: {backtestResults.win_rate.toFixed(2)}%</div>
             </div>
           </div>
           <div className="paragraph-container"></div>

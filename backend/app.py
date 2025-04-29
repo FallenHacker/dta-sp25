@@ -17,7 +17,7 @@ def load_run_dynamic_strategy():
 @app.route("/run-strategy", methods=["POST"])
 def run_strategy():
     try:
-        strategy_path = os.path.join("trading_strategies", "trading_strategy.py")
+        strategy_path = os.path.join("generate_strategies", "run_strategy.py")
         timeout = 5
         elapsed = 0
         while not os.path.exists(strategy_path) and elapsed < timeout:

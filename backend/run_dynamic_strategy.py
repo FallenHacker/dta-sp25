@@ -5,8 +5,8 @@ import importlib.util
 import os
 
 def load_strategy():
-    path = os.path.join("..", "trading_strategies", "trading_strategy.py")
-    spec = importlib.util.spec_from_file_location("trading_strategy", path)
+    path = os.path.join("..", "generate_strategies", "run_strategy.py")
+    spec = importlib.util.spec_from_file_location("run_strategy", path)
     strategy_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(strategy_module)
     return strategy_module
