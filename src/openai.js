@@ -21,8 +21,9 @@ async function callOpenAI(userInput) {
         content: `You are a Python code generation assistant specialized in creating trading strategies 
         using the vectorbt library. Your task is to carefully and accurately implement the trading strategy 
         described by the user. Your output must be pure, executable Python code that:
-        - Uses only the vectorbt library (and standard Python libraries if needed)
-        - Implements the strategy exactly as described
+        - Must contain a function called run_strategy which exactly implements the user's strategy and the following specifications
+        - run_strategy input: a pandas dataframe with the following data for every contract for a ticker over a certain period: contract_symbol, date, open, high, low, close, volume, strike_price, type, expiration_date, iv, delta, gamma, vega, theta
+        - run_strategy output: a dictionary with keys “entries”, “exits”, and "size". Entries and exits map to pandas series or dataframes with their namesake results from the strategy, and size points to a scalar for the position size
         - Contains no additional explanations, comments, or markdown formatting
         - Prioritizes code correctness and strict alignment with the user instructions
         
@@ -48,7 +49,7 @@ async function callOpenAI(userInput) {
     const cleanedResponse = match ? match[1].trim() : raw.trim();
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename  = `strategy_${timestamp}.py`;
+    const filename  = `run_strategy.py`;
     const outDir    = path.resolve(__dirname, '..', 'generated_strategies');
     fs.mkdirSync(outDir, { recursive: true });
     const outFile   = path.join(outDir, filename);
