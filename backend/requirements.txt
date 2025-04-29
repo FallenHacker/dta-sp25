@@ -1,0 +1,11 @@
+flask
+flask-cors
+os
+vectorbt
+pandas
+numpy
+matplotlib
+py_vollib
+datetime
+requests
+python-dotenv
