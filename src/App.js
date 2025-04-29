@@ -11,16 +11,33 @@ function App() {
     setInputText(e.target.value);
   };
 
-  const handleSubmit = () => {
-    if (inputText.trim() !== '') {
-      setIsSubmitted(true);
-    }
+  const handleSubmit = async () => {
+      if (!inputText.trim()) return;
+
+        try {
+          const res = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: inputText })
+          });
+    
+          const { filename, error } = await res.json();
+          if (error) throw new Error(error);
+    
+          console.log('Generated strategy file:', filename);
+    
+          //can do vectorbt graphs and stuff here
+        } catch (err) {
+          console.error('Error generating strategy:', err);
+        } finally {
+          setIsSubmitted(true);
+      }
   };
 
   // Allow pressing Enter to submit
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && inputText.trim() !== '') {
-      setIsSubmitted(true);
+    if (e.key === 'Enter') {
+        handleSubmit();
     }
   };
 
