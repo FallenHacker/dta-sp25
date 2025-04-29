@@ -47,7 +47,6 @@ async function callOpenAI(userInput) {
     const match = raw.match(/```(?:python)?\s*([\s\S]*?)\s*```/i);
     const cleanedResponse = match ? match[1].trim() : raw.trim();
 
-    // — write out to generated_strategies/
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename  = `strategy_${timestamp}.py`;
     const outDir    = path.resolve(__dirname, '..', 'generated_strategies');
