@@ -15,7 +15,7 @@ def load_run_dynamic_strategy():
     return module.result  # result is defined inside that script
 
 @app.route("/run-strategy", methods=["POST"])
-def run_strategy():
+def run_strategy2():
     try:
         strategy_path = os.path.join("generate_strategies", "run_strategy.py")
         timeout = 5
@@ -35,4 +35,4 @@ def run_strategy():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

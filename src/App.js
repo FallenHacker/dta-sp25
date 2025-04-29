@@ -33,11 +33,13 @@ function App() {
     
           console.log('Generated strategy file:', filename);
     
-          const runRes = await fetch('http://localhost:5000/run-strategy', {
+          const runRes = await fetch('http://localhost:5001/run-strategy', {
             method: 'POST'
           });
           const result = await runRes.json();
           setBacktestResults(result);
+          console.log("Backtest Results:", backtestResults);
+
           
         } catch (err) {
           console.error('Error generating strategy:', err);
