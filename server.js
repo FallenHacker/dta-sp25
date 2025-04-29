@@ -5,6 +5,10 @@ const { callOpenAI } = require('./src/openai');
 const app = express();
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors());
+app.use(express.json());
+
 app.post('/api/generate', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) {
