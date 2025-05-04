@@ -1,4 +1,6 @@
-#!/Users/rishabhchhabra/Documents/DLab/DTA/dta-sp25/backend/venv/bin/python3.10
+#!/bin/sh
+'''exec' "/Users/mahinmatlapudi/DTA SP25/dta-sp25/backend/venv/bin/python3.12" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

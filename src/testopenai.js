@@ -1,5 +1,6 @@
 
 const { callOpenAI } = require('./openai.js');
+require('dotenv').config();
 
 async function runTests() {
   const testInputs = [

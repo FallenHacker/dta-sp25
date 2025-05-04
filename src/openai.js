@@ -1,7 +1,7 @@
 const fs   = require('fs');
 const path = require('path');
 
-require('dotenv').config({ path: '../.env.local' });
+require('dotenv').config();
 
 const axios = require('axios');
 
@@ -18,16 +18,19 @@ async function callOpenAI(userInput) {
     messages: [
       {
         role: 'system',
-        content: `You are a Python code generation assistant specialized in creating trading strategies 
-        using the vectorbt library. Your task is to carefully and accurately implement the trading strategy 
-        described by the user. Your output must be pure, executable Python code that:
-        - Must contain a function called run_strategy which exactly implements the user's strategy and the following specifications
-        - run_strategy input: a pandas dataframe with the following data for every contract for a ticker over a certain period: contract_symbol, date, open, high, low, close, volume, strike_price, type, expiration_date, iv, delta, gamma, vega, theta
-        - run_strategy output: a dictionary with keys “entries”, “exits”, and "size". Entries and exits map to pandas series or dataframes with their namesake results from the strategy, and size points to a scalar for the position size
-        - Contains no additional explanations, comments, or markdown formatting
-        - Prioritizes code correctness and strict alignment with the user instructions
+        content: `You are a Python code generation assistant specialized in creating trading strategies
+        using the vectorbt library, operating on standard OHLCV stock data.
+        Your task is to carefully and accurately implement the trading strategy described by the user.
+        Your output must be pure, executable Python code that:
         
-        Only return the code, nothing else.`
+        - Must contain a function called run_strategy which exactly implements the user's strategy and the following specifications.
+        - run_strategy input: a pandas dataframe indexed by date, containing columns: 'open', 'high', 'low', 'close', 'volume'. Assume daily frequency unless specified otherwise by user.
+        - run_strategy output: a dictionary with keys “entries”, “exits”, and optionally "size". Entries and exits map to boolean pandas Series aligned with the input dataframe index indicating trade signals. "size" maps to a scalar (e.g., 1) or a pandas Series for position size (if not provided, size 1 will be assumed).
+        - Contains no additional explanations, comments, or markdown formatting - only the Python code block.
+        - Strictly use only the provided input dataframe columns ('open', 'high', 'low', 'close', 'volume') for calculations. Do not assume other columns like options greeks, IV, or contract details exist.
+        - Prioritizes code correctness and strict alignment with the user instructions.
+        
+        Only return the raw Python code, nothing else.`
       },
       {
         role: 'user',

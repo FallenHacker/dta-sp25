@@ -1,3 +1,4 @@
+# --- Node / React ---
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -11,16 +12,52 @@
 # production
 /build
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#python code for strategies
+
+# --- Python ---
+
+# Virtual Environment
+# Ignore the virtual environment directory specifically in backend
+/backend/venv/
+# Or ignore any directory named venv (more general but potentially riskier)
+# /venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+*.egg-info/
+.eggs/
+dist/
+build/  # Note: /build/ was already ignored for React, this adds general build/
+*.egg
+
+
+# --- Environment Variables ---
+# Ignore all .env files anywhere in the project
+.env
+.env.*
+
+# Ignore secrets loaded by dotenv (if different from .env*)
+# Example: secrets.json
+
+
+# --- OS / Editor / Misc ---
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+
+# Generated Strategy Code (Already added by you - good!)
 /generated_strategies
